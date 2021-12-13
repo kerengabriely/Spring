@@ -6,11 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity  // Utilizada para informar que uma classe também é uma entidade.
         // Assim, uma classe será uma entidade e terá uma tabela de mesmo nome no banco de dados.
@@ -36,6 +39,9 @@ public class Postagem {
 	@Temporal (TemporalType.TIMESTAMP) // É uma anotação JPA que se converte entre timestamp e java.
 	private Date data = new java.sql.Date(System.currentTimeMillis());  // No caso, a data e horário atual do pc.
 	
+	@ManyToOne  // Comunicação Muitos para Um
+	@JsonIgnoreProperties ("postagem") // Feito para ignorar uma repetição, evitando looping.
+	private Tema tema;
 
 	public long getId() {
 		return id;
@@ -68,6 +74,13 @@ public class Postagem {
 	public void setData(Date data) {
 		this.data = data;
 	}
-	
+
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
 	
 }
